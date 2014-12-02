@@ -1,6 +1,6 @@
 SIMD Benchmarks
 ===============
-*Run on a 2014 rMBP with an Intel i5-4278u 2.6 GHz dual-core Haswell CPU.*  
+*Tested on my 2014 rMBP with an Intel i5-4278u 2.6 GHz dual-core Haswell CPU.*  
 *OS: Windows 8.1 running on VMWare Fusion 7.*  
 *Compiled with VC++ 2012: x64 mode, `/Arch:AVX`*  
 
@@ -13,6 +13,7 @@ SIMD Benchmarks
 ```
 Reference:  
 SSE:  
-AVX2:  
-FMA3:  
+AVX_XMM:  
+AVX_YMM:  
+AVX2/FMA3:  
 ```

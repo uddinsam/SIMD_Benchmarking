@@ -15,16 +15,50 @@ public:
 
     static Matrix randMatrix();
     void operator= (const Matrix& tmp);
-    Matrix operator* (const Matrix& tmp);
+    //Matrix operator* (const Matrix& tmp);
+
+    inline Matrix Matrix::ref_mul(const Matrix& rhs) {
+
+        return Matrix((this->m0*rhs.m0) + (this->m1*rhs.m4) + (this->m2*rhs.m8) + (this->m3*rhs.m12),
+                      (this->m0*rhs.m1) + (this->m1*rhs.m5) + (this->m2*rhs.m9) + (this->m3*rhs.m13),
+                      (this->m0*rhs.m2) + (this->m1*rhs.m6) + (this->m2*rhs.m10) + (this->m3*rhs.m14),
+                      (this->m0*rhs.m3) + (this->m1*rhs.m7) + (this->m2*rhs.m11) + (this->m3*rhs.m15),
+                  
+                      (this->m4*rhs.m0) + (this->m5*rhs.m4) + (this->m6*rhs.m8) + (this->m7*rhs.m12),
+                      (this->m4*rhs.m1) + (this->m5*rhs.m5) + (this->m6*rhs.m9) + (this->m7*rhs.m13),
+                      (this->m4*rhs.m2) + (this->m5*rhs.m6) + (this->m6*rhs.m10) + (this->m7*rhs.m14),
+                      (this->m4*rhs.m3) + (this->m5*rhs.m7) + (this->m6*rhs.m11) + (this->m7*rhs.m15),
+
+                      (this->m8*rhs.m0) + (this->m9*rhs.m4) + (this->m10*rhs.m8) + (this->m11*rhs.m12),
+                      (this->m8*rhs.m1) + (this->m9*rhs.m5) + (this->m10*rhs.m9) + (this->m11*rhs.m13),
+                      (this->m8*rhs.m2) + (this->m9*rhs.m6) + (this->m10*rhs.m10) + (this->m11*rhs.m14),
+                      (this->m8*rhs.m3) + (this->m9*rhs.m7) + (this->m10*rhs.m11) + (this->m11*rhs.m15),
+
+                      (this->m12*rhs.m0) + (this->m13*rhs.m4) + (this->m14*rhs.m8) + (this->m15*rhs.m12),
+                      (this->m12*rhs.m1) + (this->m13*rhs.m5) + (this->m14*rhs.m9) + (this->m15*rhs.m13),
+                      (this->m12*rhs.m2) + (this->m13*rhs.m6) + (this->m14*rhs.m10) + (this->m15*rhs.m14),
+                      (this->m12*rhs.m3) + (this->m13*rhs.m7) + (this->m14 *rhs.m11) + (this->m15*rhs.m15)
+                     );
+    }
+
+
+    inline Matrix Matrix::sse_mul(const Matrix& rhs) {
+
+        return Matrix(_mm_add_ps(_mm_add_ps(_mm_add_ps(_mm_mul_ps(_mm_set1_ps(this->r0.m128_f32[0]), rhs.r0), _mm_mul_ps(_mm_set1_ps(this->r0.m128_f32[1]), rhs.r1)), _mm_mul_ps(_mm_set1_ps(this->r0.m128_f32[2]), rhs.r2)), _mm_mul_ps(_mm_set1_ps(this->r0.m128_f32[3]), rhs.r3)),
+                      _mm_add_ps(_mm_add_ps(_mm_add_ps(_mm_mul_ps(_mm_set1_ps(this->r1.m128_f32[0]), rhs.r0), _mm_mul_ps(_mm_set1_ps(this->r1.m128_f32[1]), rhs.r1)), _mm_mul_ps(_mm_set1_ps(this->r1.m128_f32[2]), rhs.r2)), _mm_mul_ps(_mm_set1_ps(this->r1.m128_f32[3]), rhs.r3)), 
+                      _mm_add_ps(_mm_add_ps(_mm_add_ps(_mm_mul_ps(_mm_set1_ps(this->r2.m128_f32[0]), rhs.r0), _mm_mul_ps(_mm_set1_ps(this->r2.m128_f32[1]), rhs.r1)), _mm_mul_ps(_mm_set1_ps(this->r2.m128_f32[2]), rhs.r2)), _mm_mul_ps(_mm_set1_ps(this->r2.m128_f32[3]), rhs.r3)), 
+                      _mm_add_ps(_mm_add_ps(_mm_add_ps(_mm_mul_ps(_mm_set1_ps(this->r3.m128_f32[0]), rhs.r0), _mm_mul_ps(_mm_set1_ps(this->r3.m128_f32[1]), rhs.r1)), _mm_mul_ps(_mm_set1_ps(this->r3.m128_f32[2]), rhs.r2)), _mm_mul_ps(_mm_set1_ps(this->r3.m128_f32[3]), rhs.r3))
+                     );
+    }
 
 
 private:
     union {
         struct {
-            __m128 r0;
-            __m128 r1;
-            __m128 r2;
-            __m128 r3;
+            __declspec(align(16)) __m128 r0;
+            __declspec(align(16)) __m128 r1;
+            __declspec(align(16)) __m128 r2;
+            __declspec(align(16)) __m128 r3;
         };
 
         struct {

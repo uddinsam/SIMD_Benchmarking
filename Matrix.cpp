@@ -1,5 +1,11 @@
 #include "Matrix.h"
 
+#define REF 0
+#define SSE 1 
+#define AVX_4   
+#define AVX_8   
+#define FMA3    
+
 //Default ctor
 Matrix::Matrix()
 	:m0(0.0f), m1(0.0f), m2(0.0f), m3(0.0f),
@@ -66,34 +72,8 @@ Matrix Matrix::randMatrix() {
                   static_cast<float>(rand()), static_cast<float>(rand()), static_cast<float>(rand()), static_cast<float>(rand()),
                   static_cast<float>(rand()), static_cast<float>(rand()), static_cast<float>(rand()), static_cast<float>(rand()),
                   static_cast<float>(rand()), static_cast<float>(rand()), static_cast<float>(rand()), static_cast<float>(rand())
-                  );
+                 );
 }
 
-Matrix Matrix::operator*(const Matrix& rhs)  {
 
-	__m128 outRow0, outRow1, outRow2, outRow3;
-
-	outRow0 =                     _mm_mul_ps(_mm_set1_ps(this->r0.m128_f32[0]), rhs.r0);
-	outRow0 = _mm_add_ps(outRow0, _mm_mul_ps(_mm_set1_ps(this->r0.m128_f32[1]), rhs.r1));
-	outRow0 = _mm_add_ps(outRow0, _mm_mul_ps(_mm_set1_ps(this->r0.m128_f32[2]), rhs.r2));
-	outRow0 = _mm_add_ps(outRow0, _mm_mul_ps(_mm_set1_ps(this->r0.m128_f32[3]), rhs.r3));
-
-	outRow1 =                     _mm_mul_ps(_mm_set1_ps(this->r1.m128_f32[0]), rhs.r0);
-	outRow1 = _mm_add_ps(outRow1, _mm_mul_ps(_mm_set1_ps(this->r1.m128_f32[1]), rhs.r1));
-	outRow1 = _mm_add_ps(outRow1, _mm_mul_ps(_mm_set1_ps(this->r1.m128_f32[2]), rhs.r2));
-	outRow1 = _mm_add_ps(outRow1, _mm_mul_ps(_mm_set1_ps(this->r1.m128_f32[3]), rhs.r3));
-
-	outRow2 =                     _mm_mul_ps(_mm_set1_ps(this->r2.m128_f32[0]), rhs.r0);
-	outRow2 = _mm_add_ps(outRow2, _mm_mul_ps(_mm_set1_ps(this->r2.m128_f32[1]), rhs.r1));
-	outRow2 = _mm_add_ps(outRow2, _mm_mul_ps(_mm_set1_ps(this->r2.m128_f32[2]), rhs.r2));
-	outRow2 = _mm_add_ps(outRow2, _mm_mul_ps(_mm_set1_ps(this->r2.m128_f32[3]), rhs.r3));
-
-	outRow3 =                     _mm_mul_ps(_mm_set1_ps(this->r3.m128_f32[0]), rhs.r0);
-	outRow3 = _mm_add_ps(outRow3, _mm_mul_ps(_mm_set1_ps(this->r3.m128_f32[1]), rhs.r1));
-	outRow3 = _mm_add_ps(outRow3, _mm_mul_ps(_mm_set1_ps(this->r3.m128_f32[2]), rhs.r2));
-	outRow3 = _mm_add_ps(outRow3, _mm_mul_ps(_mm_set1_ps(this->r3.m128_f32[3]), rhs.r3));
-
-	return Matrix (outRow0, outRow1, outRow2, outRow3);
-
-}
 
