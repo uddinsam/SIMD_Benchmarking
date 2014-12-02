@@ -1,4 +1,5 @@
 #include <immintrin.h>
+#include <cstdlib>
 
 class Matrix {
 public:
@@ -9,19 +10,22 @@ public:
            const float m12, const float m13, const float m14, const float m15
            );
     Matrix(const __m128& m_0, const __m128& m_1, const __m128& m_2, const __m128& m_3);
-    Matrix(Matrix& tmp);
+    Matrix(const Matrix& tmp);
     ~Matrix();
-		
+
+    static Matrix randMatrix();
     void operator= (const Matrix& tmp);
     const Matrix operator* (const Matrix& tmp);
 
 
 private:
     union {
-        __m128 r0;
-        __m128 r1;
-        __m128 r2;
-        __m128 r3;
+        struct {
+            __m128 r0;
+            __m128 r1;
+            __m128 r2;
+            __m128 r3;
+        };
 
         struct {
             float m0;

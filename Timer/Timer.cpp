@@ -31,11 +31,11 @@ void timer::toc() {
     deltaTime.QuadPart = tocTime.QuadPart - ticTime.QuadPart;
 }
 
-inline void timer::ticRaw() {
+void timer::ticRaw() {
     ticRawTime = __rdtsc();
 }
 
-inline void timer::tocRaw() {
+void timer::tocRaw() {
     tocRawTime = __rdtsc();
     deltaRawTime = tocRawTime - ticRawTime;
 }
@@ -49,7 +49,7 @@ void timer::reset() {
     deltaRawTime = 0;
 }
 
-inline unsigned __int64 timer::timeInRawCycles() {
+unsigned __int64 timer::timeInRawCycles() {
     return deltaRawTime;
 }
 
