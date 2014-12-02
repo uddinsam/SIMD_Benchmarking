@@ -15,7 +15,7 @@ public:
 
     static Matrix randMatrix();
     void operator= (const Matrix& tmp);
-    const Matrix operator* (const Matrix& tmp);
+    Matrix operator* (const Matrix& tmp);
 
 
 private:
