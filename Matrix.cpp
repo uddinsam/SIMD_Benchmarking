@@ -1,10 +1,10 @@
 #include "Matrix.h"
 
-#define REF 0
-#define SSE 1 
-#define AVX_4   
-#define AVX_8   
-#define FMA3    
+#define REF   0
+#define SSE   0 
+#define AVX_4 0   
+#define AVX_8 0 
+#define FMA3  0 
 
 //Default ctor
 Matrix::Matrix()

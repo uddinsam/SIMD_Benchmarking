@@ -60,7 +60,6 @@ printf("SSE Multiplication: %f cycles\n", sse_time);
 _aligned_free(out_sse);
 
 
-
 _aligned_free(op1);
 _aligned_free(op2);
 }
