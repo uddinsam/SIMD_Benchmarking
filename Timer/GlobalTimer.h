@@ -1,44 +1,39 @@
 #ifndef GLOBALTIMER_H
 #define GLOBALTIMER_H
 
+#include "Timer.h"
 // Singleton instance of a global timer
 
-class globalTimer
-{
+class globalTimer {
 public:
 
-	// create it
-	static void create()
-	{
-		privGetInstance()->privCreate();
+    // create it
+    static void create() {
+        privGetInstance()->privCreate();
 	};
 
 	// get updated time
-	static float getTimerInSec()
-	{
-		return privGetInstance()->privGetTimerInSec();
-	};
+    static float getTimerInSec() {
+        return privGetInstance()->privGetTimerInSec();
+    };
 
 private:
 
-	timer	gTimer;
+	timer gTimer;
 
-	static globalTimer *privGetInstance()
-	{
-		static globalTimer instance;
-		return &instance;
-	};
+    static globalTimer *privGetInstance() {
+        static globalTimer instance;
+        return &instance;
+    };
 
-	void privCreate()
-	{
-		gTimer.tic();
-	};
+    void privCreate() {
+        gTimer.tic();
+    };
 
-	float privGetTimerInSec()
-	{
-		gTimer.toc();
-		return gTimer.timeInSeconds();
-	};
+    float privGetTimerInSec() {
+        gTimer.toc();
+        return gTimer.timeInSeconds();
+    };
 
 };
 
