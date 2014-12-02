@@ -11,9 +11,9 @@ SIMD Benchmarks
 
 ####Matrix * Matrix  
 ```
-Reference:  
-SSE:  
-AVX_XMM:  
-AVX_YMM:  
+Reference: 115.0047 cycles  
+      SSE:  70.5265 cycles  
+  AVX_XMM:  
+  AVX_YMM:  
 AVX2/FMA3:  
 ```

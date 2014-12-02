@@ -44,7 +44,7 @@ for (int i = 0; i < 10000; i++) {
 unsigned __int64 delta_timeREF = __rdtsc() - timeREF;
 double ref_time = delta_timeREF/10000.0;
 printf("REFERENCE Multiplication: %f cycles\n", ref_time);
-delete[] out_ref;
+_aligned_free(out_ref);
 
 /*
  * SSE Multiplication. 
@@ -57,10 +57,10 @@ for (int i = 0; i < 10000; i++) {
 unsigned __int64 delta_timeSSE = __rdtsc() - timeSSE;
 double sse_time = delta_timeSSE/10000.0;
 printf("SSE Multiplication: %f cycles\n", sse_time);
-delete[] out_sse;
+_aligned_free(out_sse);
 
 
 
-delete[] op1;
-delete[] op2;
+_aligned_free(op1);
+_aligned_free(op2);
 }
