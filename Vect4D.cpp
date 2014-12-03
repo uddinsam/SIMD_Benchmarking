@@ -51,5 +51,5 @@ void Vect4D::ref_norm() {
 
 //multiply this->m by the reciprocal sqrt intrinsic of: (this->m)^2 via _mm_dp_ps written into all four registers (0xFF)
 void Vect4D::sse_norm() {
-	this->m = _mm_mul_ps(this->m, _mm_rsqrt_ps(_mm_dp_ps(this->m, this->m, 0xFF)));
+	this->m = _mm_mul_ps(this->m, _mm_rsqrt_ps(_mm_mul_ps(this->m, this->m)));
 }
