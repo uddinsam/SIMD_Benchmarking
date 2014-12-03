@@ -51,6 +51,17 @@ public:
                      );
     }
 
+    inline Matrix Matrix::fma3_mul(const Matrix& t) {
+
+        return Matrix(_mm_fmadd_ps(_mm_set1_ps(m3), t.r3, _mm_fmadd_ps(_mm_set1_ps(m2), t.r2, _mm_fmadd_ps(_mm_set1_ps(m1), t.r1, _mm_fmadd_ps(_mm_set1_ps(m0), t.r0, _mm_setzero_ps())))),
+                      _mm_fmadd_ps(_mm_set1_ps(m7), t.r3, _mm_fmadd_ps(_mm_set1_ps(m6), t.r2, _mm_fmadd_ps(_mm_set1_ps(m5), t.r1, _mm_fmadd_ps(_mm_set1_ps(m4), t.r0, _mm_setzero_ps())))),        
+                      _mm_fmadd_ps(_mm_set1_ps(m11), t.r3, _mm_fmadd_ps(_mm_set1_ps(m10), t.r2, _mm_fmadd_ps(_mm_set1_ps(m9), t.r1, _mm_fmadd_ps(_mm_set1_ps(m8), t.r0, _mm_setzero_ps())))),  
+                      _mm_fmadd_ps(_mm_set1_ps(m15), t.r3, _mm_fmadd_ps(_mm_set1_ps(m14), t.r2, _mm_fmadd_ps(_mm_set1_ps(m13), t.r1, _mm_fmadd_ps(_mm_set1_ps(m12), t.r0, _mm_setzero_ps()))))
+                     );
+       
+    }
+
+
 
 private:
     union {

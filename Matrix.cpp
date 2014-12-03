@@ -55,7 +55,7 @@ Matrix::Matrix(const __m128& m_0, const __m128& m_1, const __m128& m_2, const __
 }
 
 //Assignment operator
-void Matrix::operator = (const Matrix& tmp) {
+void Matrix::operator= (const Matrix& tmp) {
 	this->r0 = tmp.r0;
 	this->r1 = tmp.r1;
 	this->r2 = tmp.r2;
