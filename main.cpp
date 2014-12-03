@@ -24,65 +24,65 @@ timer matrix_mult_AVX2_FMA3;
  * Create two 10000-element arrays of Matrices. Multiply each element i in op1 by op2 using each
  * type of instruction set. (i.e. op1[i] (*_mul) op2[i])
  */
-unsigned __int64 time = __rdtsc();
+
 Matrix* op1 = (Matrix *)_aligned_malloc(sizeof(Matrix)*10000, 16);
 Matrix* op2 = (Matrix *)_aligned_malloc(sizeof(Matrix)*10000, 16);
 for (int i = 0; i < 10000; i++) {
     op1[i] = Matrix::randMatrix();
     op2[i] = Matrix::randMatrix();
 }
-unsigned __int64 delta_timeCreate = __rdtsc() - time;
-printf("Creation of 20000 random float Matrices: %f cycles\n", (double)delta_timeCreate);
 
+DWORD64 avg_time = MAXDWORD64;
+DWORD64 time = 0; 
+DWORD64 delta_time = 0;
+DWORD64 accum = 0;
 /*
  * REFERENCE Multiplication. 
  */
 Matrix* out_ref = (Matrix *)_aligned_malloc(sizeof(Matrix)*10000, 16);
-DWORD64 best_timeREF = MAXDWORD64;
-DWORD64 timeREF, delta_timeREF;
+
 for (int i = 0; i < 10000; i++) {
-    timeREF = __rdtsc();
+    time = __rdtsc();
     out_ref[i] = op1[i].ref_mul(op2[i]);
-    delta_timeREF = __rdtsc() - timeREF;
-    if (delta_timeREF < best_timeREF) {
-        best_timeREF = delta_timeREF;
-    }
+    delta_time = __rdtsc() - time;
+    accum += delta_time;
 }
-printf("REFERENCE Multiplication: %f cycles\n", (double)best_timeREF);
+
+avg_time = accum/10000.0;
+
+printf("REFERENCE Multiplication: %f cycles\n", (double)avg_time);
 _aligned_free(out_ref);
 
 /*
  * SSE Multiplication. 
  */
 Matrix* out_sse = (Matrix *)_aligned_malloc(sizeof(Matrix)*10000, 16);
-DWORD64 best_timeSSE = MAXDWORD64;
-DWORD64 timeSSE, delta_timeSSE;
-for (int i = 0; i < 10000; i++) {
-    timeSSE = __rdtsc();
+accum = 0;
+for (int i = 0; i < 10000; i++) {   
+    time = __rdtsc();
     out_sse[i] = op1[i].sse_mul(op2[i]);
-    delta_timeSSE = __rdtsc() - timeSSE;
-    if (delta_timeSSE < best_timeSSE) {
-        best_timeSSE = delta_timeSSE;
-    }
+    delta_time = __rdtsc() - time;
+    accum += delta_time;
 }
-printf("SSE Multiplication: %f cycles\n", (double)best_timeSSE);
+
+avg_time = accum/10000.0;
+printf("SSE Multiplication: %f cycles\n", (double)avg_time);
 _aligned_free(out_sse);
 
 /*
  * FMA3 128-bit Multiplication.
  */
 Matrix* out_fma3_128 = (Matrix *)_aligned_malloc(sizeof(Matrix)*10000, 16);
-DWORD64 best_timeFMA3 = MAXDWORD64;
-DWORD64 timeFMA3, delta_timeFMA3;
+accum = 0;
 for (int i = 0; i < 10000; i++) {
-    timeFMA3 = __rdtsc();
+    time = __rdtsc();
     out_fma3_128[i] = op1[i].fma3_mul(op2[i]);
-    delta_timeFMA3 = __rdtsc() - timeFMA3;
-    if (delta_timeFMA3 < best_timeFMA3) {
-        best_timeFMA3 = delta_timeFMA3;
-    }
+    delta_time = __rdtsc() - time;
+    accum += delta_time;
 }
-printf("FMA3 128-bit Multiplication: %f cycles\n", (double)best_timeFMA3);
+
+avg_time = accum/10000.0;
+printf("FMA3 128-bit Multiplication: %f cycles\n", (double)avg_time);
 _aligned_free(out_fma3_128);
 
 _aligned_free(op1);
@@ -92,10 +92,49 @@ _aligned_free(op2);
  * Vector Normalization
  */
 
-
+Vect4D* op_normalize = (Vect4D *) _aligned_malloc(sizeof(Vect4D)*10000, 16);
 Vect4D* ref_normalize = (Vect4D *) _aligned_malloc(sizeof(Vect4D)*10000, 16);
-_aligned_free(ref_normalize);
 Vect4D* sse_normalize = (Vect4D *) _aligned_malloc(sizeof(Vect4D)*10000, 16);
+for (int i = 0; i < 10000; i++) {
+    ref_normalize[i] = Vect4D::randVect4D();
+    sse_normalize[i] = Vect4D::randVect4D();
+}
+
+/*
+ * REFERENCE 4-D Vector Normalization.
+ */
+accum = 0;
+for (int i = 0; i < 10000; i++) {
+    time = __rdtsc();
+    ref_normalize[i].ref_norm();
+    delta_time = __rdtsc() - time;
+    accum += delta_time;
+}
+
+avg_time = accum/10000.0;
+printf("REFERENCE Normalization: %f cycles\n", (double)avg_time);
+
+/*
+ * SSE Normalization. 
+ */
+
+for (int i = 0; i < 10000; i++) {
+    time = __rdtsc();
+    sse_normalize[i].sse_norm();
+    delta_time = __rdtsc() - time;
+    accum += delta_time;
+}
+
+avg_time = accum/10000.0;
+printf("SSE Normalization: %f cycles\n", (double)avg_time);
+
+
+
+
+
+_aligned_free(op_normalize);
+_aligned_free(ref_normalize);
 _aligned_free(sse_normalize);
+
 
 }

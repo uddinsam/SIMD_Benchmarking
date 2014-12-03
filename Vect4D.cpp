@@ -42,13 +42,11 @@ Vect4D Vect4D::randVect4D() {
 }
 
 //Reference Vector normalization
-void Vect4D::ref_norm() {
-    float mag = sqrtf(x*x + y*y + z*z + w*w);
-
-    this->x /= mag;
-    this->y /= mag;
-    this->z /= mag;
-    this->w /= mag;
+void Vect4D::ref_norm() {    
+    this->x /= sqrtf(x*x + y*y + z*z + w*w);
+    this->y /= sqrtf(x*x + y*y + z*z + w*w);
+    this->z /= sqrtf(x*x + y*y + z*z + w*w);
+    this->w /= sqrtf(x*x + y*y + z*z + w*w);
 }
 
 //multiply this->m by the reciprocal sqrt intrinsic of: (this->m)^2 via _mm_dp_ps written into all four registers (0xFF)
